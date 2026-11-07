@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1B3A5C">
+<title>SOMAS · MN² — Soluções em Métodos e Análises em Saúde</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --azul:   #1B3A5C;
+  --azul-h: #243f65;
+  --teal:   #0D8A6A;
+  --teal-h: #0aaf87;
+  --teal-lt:#e8f7f3;
+  --gelo:   #F2F5F9;
+  --borda:  #DDE4EE;
+  --texto:  #1A1A2E;
+  --muted:  #4E5D72;
+  --branco: #FFFFFF;
+
+  --f-xs:   clamp(0.72rem,  1.8vw, 0.78rem);
+  --f-sm:   clamp(0.85rem,  2vw,   0.92rem);
+  --f-base: clamp(0.95rem,  2.2vw, 1.02rem);
+  --f-md:   clamp(1rem,     2.5vw, 1.15rem);
+  --f-lg:   clamp(1.1rem,   2.8vw, 1.35rem);
+  --f-h3:   clamp(1.25rem,  3vw,   1.55rem);
+  --f-h2:   clamp(1.65rem,  4vw,   2.6rem);
+  --f-h1:   clamp(2rem,     5.5vw, 3.8rem);
+
+  --serif: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+  --sans:  'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --r-sm: 8px; --r-md: 12px; --r-lg: 16px;
+  --shadow: 0 2px 16px rgba(27,58,92,.07);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;text-size-adjust:100%;-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);font-size:var(--f-base);line-height:1.7;color:var(--texto);background:var(--branco);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+img,svg{max-width:100%;display:block}
+button,input,select,textarea{font-family:inherit;font-size:inherit;line-height:inherit}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;height:62px;padding:0 max(1.25rem,5vw);display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--borda)}
+.nav-logo{display:flex;align-items:center;gap:.5rem;text-decoration:none}
+.nav-sigma{font-family:var(--serif);font-size:1.85rem;color:var(--teal);line-height:1;font-weight:700}
+.nav-nome{font-size:var(--f-base);font-weight:700;color:var(--azul);letter-spacing:.04em}
+.nav-mn2{font-size:var(--f-xs);color:var(--muted);font-weight:400}
+.nav-links{display:flex;align-items:center;gap:clamp(.875rem,2.5vw,1.75rem);list-style:none}
+.nav-links a{font-size:var(--f-sm);font-weight:500;color:var(--muted);text-decoration:none;transition:color .15s;white-space:nowrap}
+.nav-links a:hover{color:var(--azul)}
+.nav-cta{background:var(--teal)!important;color:var(--branco)!important;padding:.45rem 1.1rem;border-radius:var(--r-sm)}
+.nav-cta:hover{background:var(--teal-h)!important}
+
+/* BOTÕES */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.8rem 1.75rem;border-radius:var(--r-sm);font-size:var(--f-sm);font-weight:500;font-family:var(--sans);text-decoration:none;cursor:pointer;border:none;transition:background .15s,border-color .15s,opacity .15s;white-space:nowrap;-webkit-appearance:none}
+.btn-teal{background:var(--teal);color:var(--branco)}
+.btn-teal:hover{background:var(--teal-h)}
+.btn-azul{background:var(--azul);color:var(--branco)}
+.btn-azul:hover{background:var(--azul-h)}
+.btn-ghost{background:transparent;color:var(--azul);border:1.5px solid var(--borda)}
+.btn-ghost:hover{border-color:var(--azul)}
+.btn-branco{background:var(--branco);color:var(--teal);font-weight:600}
+.btn-branco:hover{opacity:.92}
+.btn-branco-ghost{background:transparent;color:var(--branco);border:1.5px solid rgba(255,255,255,.5)}
+.btn-branco-ghost:hover{border-color:var(--branco)}
+.btn-wpp{background:#25D366;color:var(--branco);font-weight:600}
+.btn-wpp:hover{background:#1ebe5d}
+
+/* HERO */
+.hero-faixa{background:linear-gradient(to bottom,#0D2440 0%,#0D2440 65%,#F2F5F9 100%);padding:clamp(2.5rem,6vw,4rem) max(1.25rem,5vw) clamp(3rem,7vw,5rem);text-align:center}
+.hero-degradê{display:none}
+.hero-logo-block{display:inline-flex;flex-direction:column;align-items:center}
+.hero-sigma{font-family:var(--serif);font-size:clamp(4.5rem,10vw,7.5rem);font-weight:700;color:#5DCAA5;line-height:1}
+.hero-linha{height:2px;background:#ffffff;width:100%;margin:clamp(6px,1.2vw,12px) 0}
+.hero-linha-teal{height:2px;background:#5DCAA5;width:100%;margin:clamp(6px,1.2vw,12px) 0}
+.hero-nome{font-family:var(--serif);font-size:clamp(2.2rem,5.5vw,4.2rem);font-weight:700;color:#ffffff;letter-spacing:.18em;line-height:1.1}
+.hero-tagline{font-size:clamp(0.7rem,1.8vw,1rem);color:#ffffff;letter-spacing:.1em;text-transform:uppercase;line-height:2;font-weight:700;text-shadow:0 1px 8px rgba(13,36,64,.9),0 0 16px rgba(13,36,64,.7)}
+
+.hero-corpo{background:var(--gelo);padding:clamp(3rem,7vw,5rem) max(1.25rem,5vw) clamp(3rem,7vw,5rem);text-align:center}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:var(--f-xs);font-weight:600;letter-spacing:.14em;color:var(--teal);text-transform:uppercase;margin-bottom:1.25rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:2px;background:var(--teal);flex-shrink:0}
+.hero-corpo h1{font-family:var(--serif);font-size:var(--f-h1);font-weight:400;line-height:1.15;color:var(--azul);margin-bottom:1rem;max-width:22ch;margin-left:auto;margin-right:auto}
+.hero-corpo h1 em{font-style:italic;color:var(--teal)}
+.hero-corpo .hero-sub{font-size:var(--f-base);color:var(--muted);max-width:52ch;margin:0 auto 2.25rem;line-height:1.75;font-weight:400}
+.hero-actions{display:flex;gap:.875rem;flex-wrap:wrap;justify-content:center}
+.btn-hero-primary{background:var(--teal);color:var(--branco);padding:.95rem 2.2rem;font-size:var(--f-base);font-weight:600;box-shadow:0 4px 18px rgba(13,138,106,.28)}
+.btn-hero-primary:hover{background:var(--teal-h);box-shadow:0 6px 24px rgba(13,138,106,.36)}
+.btn-hero-secondary{background:transparent;color:var(--azul);border:1.5px solid var(--azul);padding:.95rem 2.2rem;font-size:var(--f-base)}
+
+/* PORTFÓLIO */
+.sec-port{background:var(--branco);padding:clamp(3rem,7vw,5rem) max(1.25rem,5vw)}
+.port-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem}
+.port-card{border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s}
+
+.port-body{padding:1.25rem;display:flex;flex-direction:column;gap:.6rem;flex:1}
+.port-card:hover{box-shadow:0 8px 28px rgba(27,58,92,.1);transform:translateY(-2px)}
+.port-badge{display:flex;gap:.5rem;flex-wrap:wrap}
+.port-tag{font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .6rem;border-radius:20px;background:var(--gelo);color:var(--teal)}
+.port-tag-area{background:#e8f4f1;color:#0a6b52}
+.port-title{font-family:var(--serif);font-size:var(--f-base);font-weight:400;color:var(--azul);line-height:1.35}
+.port-desc{font-size:var(--f-xs);color:var(--muted);line-height:1.7;flex:1}
+.port-meta{font-size:.65rem;color:var(--muted);border-top:1px solid var(--gelo);padding-top:.6rem;margin-top:.25rem}
+
+/* SEÇÃO VÍDEO */
+.sec-video{background:var(--azul);padding:clamp(3rem,7vw,5rem) max(1.25rem,5vw);text-align:center}
+.sec-video-label{display:inline-flex;align-items:center;gap:.5rem;font-size:var(--f-xs);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:.75rem}
+.sec-video-label::before,.sec-video-label::after{content:'';display:block;width:16px;height:2px;background:var(--teal);flex-shrink:0}
+.sec-video-titulo{font-family:var(--serif);font-size:clamp(1.3rem,3vw,2rem);font-weight:400;color:#ffffff;margin-bottom:1.75rem;line-height:1.2}
+.video-wrapper{position:relative;width:100%;max-width:860px;margin:0 auto;border-radius:10px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+.video-wrapper::before{content:'';display:block;padding-top:56.25%}
+.video-wrapper iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* SEÇÕES */
+section{padding:clamp(3rem,7vw,5.5rem) max(1.25rem,5vw)}
+.container{max-width:1140px;margin:0 auto}
+.sec-label{display:inline-flex;align-items:center;gap:.5rem;font-size:var(--f-xs);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:.9rem}
+.sec-label::before{content:'';display:block;width:16px;height:2px;background:var(--teal);flex-shrink:0}
+.sec-h2{font-family:var(--serif);font-size:var(--f-h2);font-weight:400;color:var(--azul);line-height:1.15;margin-bottom:.9rem;max-width:28ch}
+.sec-desc{font-size:var(--f-base);color:var(--muted);max-width:54ch;font-weight:400;line-height:1.8;margin-bottom:2.75rem}
+
+/* SOBRE */
+#sobre{background:var(--gelo)}
+.sobre-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,6vw,4.5rem);align-items:center}
+.sobre-text p{font-size:var(--f-base);color:var(--muted);font-weight:400;line-height:1.85;margin-bottom:1rem}
+.sobre-text p strong{color:var(--azul);font-weight:500}
+.sobre-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+.stat-card{background:var(--branco);border-radius:var(--r-md);padding:1.35rem;border:1px solid var(--borda);box-shadow:var(--shadow)}
+.stat-n{font-family:var(--serif);font-size:clamp(2rem,5vw,2.75rem);color:var(--azul);line-height:1;margin-bottom:.25rem}
+.stat-n span{color:var(--teal)}
+.stat-l{font-size:var(--f-xs);color:var(--muted);line-height:1.4}
+
+/* COMO FUNCIONA — CARROSSEL */
+#como-funciona{background:var(--branco);overflow:hidden}
+.carousel-wrap{position:relative;margin-top:1rem}
+.carousel-track{display:flex;gap:1.25rem;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:.5rem;cursor:grab}
+.carousel-track::-webkit-scrollbar{display:none}
+.carousel-track.grabbing{cursor:grabbing}
+.step-card{flex:0 0 min(320px,80vw);scroll-snap-align:start;padding:1.75rem;border-radius:var(--r-md);border:1px solid var(--borda);background:var(--branco);transition:border-color .2s,box-shadow .2s}
+.step-card:hover{border-color:var(--teal);box-shadow:0 4px 20px rgba(13,138,106,.09)}
+.step-num{font-family:var(--serif);font-size:clamp(2rem,5vw,3rem);color:transparent;line-height:1;margin-bottom:.4rem;position:relative}
+.step-num::after{content:attr(data-n);position:absolute;left:0;top:0;font-size:inherit;background:linear-gradient(135deg,var(--azul) 20%,var(--teal) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:1}
+.step-title{font-size:var(--f-md);font-weight:600;color:var(--azul);margin-bottom:.35rem}
+.step-highlight{color:var(--teal);font-weight:500}
+.step-desc{font-size:var(--f-sm);color:var(--muted);font-weight:400;line-height:1.7}
+
+/* PONTINHOS */
+.carousel-dots{display:flex;justify-content:center;gap:.5rem;margin-top:1.5rem}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--borda);border:none;cursor:pointer;padding:0;transition:background .2s,transform .2s}
+.dot.active{background:var(--teal);transform:scale(1.25)}
+
+/* CARROSSEL GENÉRICO */
+.carousel-section{overflow:hidden}
+.multi-track{display:flex;gap:1.25rem;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:.5rem;cursor:grab}
+.multi-track::-webkit-scrollbar{display:none}
+.multi-track.grabbing{cursor:grabbing}
+
+/* SERVIÇOS */
+#servicos{background:var(--gelo)}
+.servicos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(270px,100%),1fr));gap:1.25rem}
+.svc-card{background:var(--branco);border:1px solid var(--borda);border-radius:var(--r-md);padding:1.5rem;position:relative;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.svc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,var(--azul),var(--teal));transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.svc-card:hover{border-color:var(--teal);box-shadow:0 4px 24px rgba(13,138,106,.09)}
+.svc-card:hover::before{transform:scaleX(1)}
+.svc-icon{width:40px;height:40px;border-radius:var(--r-sm);background:var(--gelo);display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:.9rem}
+.svc-title{font-family:var(--serif);font-size:var(--f-lg);color:var(--azul);margin-bottom:.45rem;line-height:1.25}
+.svc-desc{font-size:var(--f-sm);color:var(--muted);font-weight:400;line-height:1.7;margin-bottom:.9rem}
+.svc-tags{display:flex;flex-wrap:wrap;gap:.3rem}
+.svc-tag{font-size:var(--f-xs);font-weight:500;color:var(--teal);background:var(--teal-lt);border-radius:4px;padding:2px 8px}
+
+/* PARA QUEM */
+#publico{background:var(--branco)}
+.publico-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:1.1rem}
+.pub-card{background:var(--gelo);border-radius:var(--r-md);padding:1.35rem;border:1px solid var(--borda)}
+.pub-icon{font-size:1.65rem;margin-bottom:.65rem}
+.pub-title{font-size:var(--f-md);font-weight:600;color:var(--azul);margin-bottom:.3rem}
+.pub-desc{font-size:var(--f-sm);color:var(--muted);font-weight:400;line-height:1.6}
+
+/* DIFERENCIAIS */
+#diferenciais{background:var(--azul)}
+#diferenciais .sec-label{color:var(--teal-h)}
+#diferenciais .sec-label::before{background:var(--teal-h)}
+#diferenciais .sec-h2{color:var(--branco)}
+.dif-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:2rem;margin-top:2.5rem}
+.dif-num{font-family:var(--serif);font-size:clamp(2rem,5vw,3rem);color:var(--teal-h);line-height:1;margin-bottom:.4rem;opacity:.85}
+.dif-title{font-size:var(--f-md);font-weight:600;color:var(--branco);margin-bottom:.35rem}
+.dif-desc{font-size:var(--f-sm);color:rgba(255,255,255,.72);font-weight:300;line-height:1.7}
+
+/* FAQ */
+#faq{background:var(--gelo)}
+.faq-list{max-width:740px;margin-top:1.75rem}
+.faq-item{border-bottom:1px solid var(--borda)}
+.faq-q{width:100%;background:none;border:none;text-align:left;padding:1.15rem 0;font-size:var(--f-base);font-weight:600;color:var(--azul);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-icon{width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;transition:transform .2s;font-weight:400}
+.faq-a{font-size:var(--f-sm);color:var(--muted);font-weight:400;line-height:1.75;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease}
+.faq-item.open .faq-a{max-height:320px;padding-bottom:1.15rem}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+
+/* CONTATO */
+#contato{background:var(--branco)}
+.contato-cta{background:var(--teal);border-radius:var(--r-lg);padding:clamp(2rem,5vw,3.5rem);text-align:center;margin-bottom:2.5rem}
+.contato-cta h2{font-family:var(--serif);font-size:clamp(1.5rem,4vw,2.2rem);color:var(--branco);margin-bottom:.7rem;line-height:1.2}
+.contato-cta p{font-size:var(--f-base);color:rgba(255,255,255,.82);font-weight:300;max-width:50ch;margin:0 auto 2rem;line-height:1.7}
+.contato-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+/* MODAIS */
+.modal-overlay{position:fixed;inset:0;background:rgba(10,15,30,.6);z-index:500;display:flex;align-items:center;justify-content:center;padding:1.25rem;opacity:0;pointer-events:none;transition:opacity .25s;-webkit-overflow-scrolling:touch}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--branco);border-radius:var(--r-lg);max-width:560px;width:100%;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:clamp(1.5rem,4vw,2.5rem);position:relative}
+.modal-close{position:absolute;top:1rem;right:1rem;background:var(--gelo);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;color:var(--muted);display:flex;align-items:center;justify-content:center}
+.modal h3{font-family:var(--serif);font-size:var(--f-h3);color:var(--azul);margin-bottom:.5rem;line-height:1.2}
+.modal-sub{font-size:var(--f-sm);color:var(--muted);font-weight:300;line-height:1.65;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--borda)}
+.form-group{margin-bottom:1.2rem}
+.form-group label{display:block;font-size:var(--f-xs);font-weight:600;color:var(--azul);margin-bottom:.4rem;letter-spacing:.02em}
+.form-group input,.form-group textarea,.form-group select{width:100%;border:1.5px solid var(--borda);border-radius:var(--r-sm);padding:.75rem 1rem;font-size:var(--f-sm);color:var(--texto);background:var(--branco);transition:border-color .15s;outline:none;resize:vertical;-webkit-appearance:none;appearance:none}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--teal)}
+.form-group textarea{min-height:110px}
+.form-note{font-size:var(--f-xs);color:var(--muted);margin-top:.4rem;font-weight:300;line-height:1.55}
+.form-submit{width:100%;margin-top:.5rem;padding:.9rem;font-size:var(--f-base)}
+.form-success{display:none;text-align:center;padding:1.75rem 0}
+.form-success .check{font-size:2.5rem;margin-bottom:1rem}
+.form-success h4{font-family:var(--serif);color:var(--azul);font-size:var(--f-h3);margin-bottom:.5rem}
+.form-success p{font-size:var(--f-sm);color:var(--muted);font-weight:300}
+
+/* FOOTER */
+footer{background:var(--azul);color:rgba(255,255,255,.45);padding:2rem max(1.25rem,5vw);text-align:center;font-size:var(--f-xs);font-weight:300;line-height:1.9}
+footer strong{color:rgba(255,255,255,.82);font-weight:500}
+.footer-btns{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-top:.5rem}
+.footer-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.35rem .85rem;border-radius:20px;font-size:.7rem;font-weight:600;letter-spacing:.04em;text-decoration:none;transition:opacity .2s}
+.footer-btn-email{background:rgba(255,255,255,.12);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.25)}
+.footer-btn-email:hover{background:rgba(255,255,255,.2)}
+.footer-btn-wpp{background:rgba(13,138,106,.35);color:#5DCAA5;border:1px solid rgba(93,202,165,.35)}
+.footer-btn-wpp:hover{background:rgba(13,138,106,.5)}
+
+/* RESPONSIVE */
+@media(max-width:860px){.sobre-grid{grid-template-columns:1fr;gap:2rem}.port-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.port-grid{grid-template-columns:1fr}}
+@media(max-width:640px){
+  nav{padding:0 1rem}
+  .nav-links{display:none}
+  .hero-corpo h1{max-width:none}
+  .contato-btns{flex-direction:column;align-items:stretch}
+  .contato-btns .btn{text-align:center;justify-content:center}
+}
+@media(max-width:400px){
+  .hero-actions{flex-direction:column}
+  .hero-actions .btn{width:100%;justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo" aria-label="SOMAS MN² página inicial">
+    <span class="nav-sigma" aria-hidden="true">Σ</span>
+    <span><span class="nav-nome">SOMAS</span><span class="nav-mn2"> · MN²</span></span>
+  </a>
+  <ul class="nav-links" role="list">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#como-funciona">Como funciona</a></li>
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#portfolio">Portfólio</a></li>
+    <li><a href="#faq">Perguntas frequentes</a></li>
+    <li><a href="https://mail.google.com/mail/?view=cm&to=somas.mn2@gmail.com" target="_blank" rel="noopener" class="nav-cta">Fale conosco</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section style="padding:0" aria-label="Apresentação">
+  <div class="hero-faixa">
+    <div class="hero-logo-block">
+      <div class="hero-sigma" aria-hidden="true">Σ</div>
+      <div class="hero-linha"></div>
+      <div class="hero-nome">SOMAS</div>
+      <div class="hero-linha-teal"></div>
+      <div class="hero-tagline">Soluções em Métodos<br>e Análises em Saúde</div>
+    </div>
+  </div>
+</section>
+<div class="hero-degradê" aria-hidden="true"></div>
+<div class="hero-corpo">
+  <div class="hero-eyebrow">Métodos de pesquisa e análise de dados em saúde</div>
+  <h1>Pesquisa em saúde conduzida com <em>método</em> e precisão científica</h1>
+  <p class="hero-sub">Serviço de consultoria e análise de dados quantitativos e qualitativos aplicados à pesquisa científica.</p>
+  <div class="hero-actions">
+    <button class="btn btn-hero-primary" onclick="abrirModal('orcamento')">Solicitar orçamento</button>
+    <button class="btn btn-hero-secondary" onclick="abrirModal('consultoria')">Agendar consultoria</button>
+  </div>
+</div>
+
+<!-- VÍDEO INSTITUCIONAL -->
+<section class="sec-video" aria-label="Vídeo institucional">
+  <div class="sec-video-label">Conheça a SOMAS</div>
+  <h2 class="sec-video-titulo">Entenda em 30 segundos como podemos avançar juntos na sua pesquisa</h2>
+  <div class="video-wrapper">
+    <iframe
+      src="https://www.youtube.com/embed/hGIYOB8bGqo?rel=0&modestbranding=1"
+      title="SOMAS · MN² — Vídeo institucional"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre">
+<div class="container">
+  <div class="sobre-grid">
+    <div class="sobre-text">
+      <div class="sec-label">Sobre a SOMAS</div>
+      <h2 class="sec-h2">Ciência aplicada. Método rigoroso. Resultado concreto.</h2>
+      <p>A SOMAS · MN² é uma consultoria científica fundada sobre os mais altos padrões acadêmicos, com <strong>formação consolidada nas melhores instituições do país</strong> e trajetória reconhecida em epidemiologia, bioestatística e pesquisa em saúde coletiva.</p>
+      <p>Atuamos em todo o ciclo da pesquisa científica — do delineamento à interpretação dos resultados — com rigor nos métodos e compromisso irrestrito com a integridade científica em cada etapa.</p>
+      <p>O nome SOMAS expressa nossa proposta: a reunião de <strong>métodos robustos</strong>, <strong>expertises complementares</strong> e evidências que, integradas, impulsionam o avanço do seu estudo.</p>
+    </div>
+    <div class="sobre-stats">
+      <div class="stat-card">
+        <div class="stat-n">90<span>+</span></div>
+        <div class="stat-l">Artigos publicados em periódicos nacionais e internacionais</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n">12<span>+</span></div>
+        <div class="stat-l">Anos de experiência em pesquisa e docência em saúde</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n">10<span>+</span></div>
+        <div class="stat-l">Dissertações e teses orientadas com êxito</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n" style="font-size:clamp(1rem,3vw,1.35rem);line-height:1.3;">Excelência<span>.</span></div>
+        <div class="stat-l">Formação consolidada nas melhores instituições científicas do país</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section id="como-funciona">
+<div class="container">
+  <div class="sec-label">Como funciona</div>
+  <h2 class="sec-h2">Quatro etapas. Processo claro, entregas visíveis.</h2>
+  <p class="sec-desc">Cada serviço segue um fluxo estruturado para que você saiba, desde o início, o que será realizado, em que prazo e com qual entrega.</p>
+
+  <div class="carousel-wrap">
+    <div class="carousel-track" id="carousel" role="list">
+
+      <div class="step-card" role="listitem">
+        <div class="step-num" data-n="01" aria-hidden="true">01</div>
+        <div class="step-title">Apresentação do seu estudo</div>
+        <div class="step-desc">Preencha o formulário com os detalhes da sua pesquisa. <span class="step-highlight">Quanto mais contexto você compartilhar</span> sobre objetivos, dados e dúvidas sobre os métodos, mais precisa será a avaliação. Nenhuma análise antes de entender o problema.</div>
+      </div>
+
+      <div class="step-card" role="listitem">
+        <div class="step-num" data-n="02" aria-hidden="true">02</div>
+        <div class="step-title">Proposta técnica personalizada</div>
+        <div class="step-desc">Analisamos sua demanda e respondemos por e-mail com uma proposta detalhando <span class="step-highlight">escopo, prazo e valor</span>. Sem compromisso prévio de sua parte. Você decide com clareza se faz sentido seguir.</div>
+      </div>
+
+      <div class="step-card" role="listitem">
+        <div class="step-num" data-n="03" aria-hidden="true">03</div>
+        <div class="step-title">Execução com rigor científico</div>
+        <div class="step-desc">Conduzimos as análises ou a consultoria conforme acordado, com <span class="step-highlight">documentação técnica completa</span>, transparente e reproduzível para embasar a escrita dos seus resultados.</div>
+      </div>
+
+      <div class="step-card" role="listitem">
+        <div class="step-num" data-n="04" aria-hidden="true">04</div>
+        <div class="step-title">Devolutiva e transferência de conhecimento</div>
+        <div class="step-desc">Apresentamos os resultados em reunião online, fundamentamos cada decisão analítica e asseguramos que você <span class="step-highlight">compreenda e sustente</span> o que foi realizado perante a banca ou publicação.</div>
+      </div>
+
+    </div>
+    <div class="carousel-dots" role="tablist" aria-label="Etapas do processo">
+      <button class="dot active" onclick="irPara(0)" role="tab" aria-selected="true" aria-label="Etapa 1"></button>
+      <button class="dot" onclick="irPara(1)" role="tab" aria-selected="false" aria-label="Etapa 2"></button>
+      <button class="dot" onclick="irPara(2)" role="tab" aria-selected="false" aria-label="Etapa 3"></button>
+      <button class="dot" onclick="irPara(3)" role="tab" aria-selected="false" aria-label="Etapa 4"></button>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SERVIÇOS -->
+<section id="servicos" class="carousel-section">
+<div class="container">
+  <div class="sec-label">O que fazemos</div>
+  <h2 class="sec-h2">Serviços especializados em pesquisa científica em saúde</h2>
+  <p class="sec-desc">Atuamos em todas as etapas da pesquisa científica, com método, transparência e compromisso com a integridade em cada entrega.</p>
+  <div class="carousel-wrap">
+    <div class="multi-track" id="svc-track" role="list">
+      <div class="svc-card step-card" role="listitem">
+        <div class="svc-icon">📊</div>
+        <div class="svc-title">Modelagem estatística avançada</div>
+        <div class="svc-desc">Aplicação de modelos estatísticos para diferentes desfechos e estruturas de dados, com seleção criteriosa dos métodos, avaliação de pressupostos e interpretação dos resultados.</div>
+        <div class="svc-tags"><span class="svc-tag">R e RStudio</span><span class="svc-tag">Dados quantitativos</span></div>
+      </div>
+      <div class="svc-card step-card" role="listitem">
+        <div class="svc-icon">📈</div>
+        <div class="svc-title">Séries temporais em saúde</div>
+        <div class="svc-desc">ARIMA, joinpoint, diagramas de controle epidemiológico e análise de tendências para vigilância em saúde e avaliação de intervenções.</div>
+        <div class="svc-tags"><span class="svc-tag">Vigilância em saúde</span><span class="svc-tag">Joinpoint</span></div>
+      </div>
+      <div class="svc-card step-card" role="listitem">
+        <div class="svc-icon">🗺️</div>
+        <div class="svc-title">Análise espacial e geoepidemiologia</div>
+        <div class="svc-desc">Mapeamento de agravos, clusters epidemiológicos, autocorrelação espacial e distribuição geográfica de condições de saúde.</div>
+        <div class="svc-tags"><span class="svc-tag">Análise espacial</span><span class="svc-tag">SIG em saúde</span></div>
+      </div>
+      <div class="svc-card step-card" role="listitem">
+        <div class="svc-icon">🔬</div>
+        <div class="svc-title">Delineamento e consultoria em métodos</div>
+        <div class="svc-desc">Elaboração de projetos, formulação de hipóteses, cálculo amostral, plano analítico e orientação em métodos de pesquisa para estudos acadêmicos e institucionais.</div>
+        <div class="svc-tags"><span class="svc-tag">Dissertações</span><span class="svc-tag">Teses</span><span class="svc-tag">Projetos</span></div>
+      </div>
+      <div class="svc-card step-card" role="listitem">
+        <div class="svc-icon">📋</div>
+        <div class="svc-title">Revisões e síntese de evidências</div>
+        <div class="svc-desc">Revisões sistemáticas, de escopo e integrativas com protocolos rigorosos — PRISMA, JBI, PRISMA-ScR — do planejamento à síntese final.</div>
+        <div class="svc-tags"><span class="svc-tag">PRISMA</span><span class="svc-tag">JBI</span><span class="svc-tag">Revisão de escopo</span></div>
+      </div>
+      <div class="svc-card step-card" role="listitem">
+        <div class="svc-icon">💬</div>
+        <div class="svc-title">Métodos qualitativos</div>
+        <div class="svc-desc">Análise pelo Discurso do Sujeito Coletivo (DSC), Análise Temática e processamento lexicométrico com IRaMuTeQ aplicados à pesquisa em saúde.</div>
+        <div class="svc-tags"><span class="svc-tag">DSC</span><span class="svc-tag">IRaMuTeQ</span><span class="svc-tag">Análise Temática</span></div>
+      </div>
+      <div class="svc-card step-card" role="listitem">
+        <div class="svc-icon">🧮</div>
+        <div class="svc-title">Linkage e integração de bases de dados</div>
+        <div class="svc-desc">Integração e tratamento de grandes bases de dados em saúde, construção de painéis de indicadores e relatórios analíticos automatizados.</div>
+        <div class="svc-tags"><span class="svc-tag">Big data em saúde</span><span class="svc-tag">R Markdown</span></div>
+      </div>
+      <div class="svc-card step-card" role="listitem">
+        <div class="svc-icon">📄</div>
+        <div class="svc-title">Parecer e assessoria em métodos</div>
+        <div class="svc-desc">Pareceres técnicos sobre adequação dos métodos, análise crítica de projetos, revisão de manuscritos e apoio à submissão científica.</div>
+        <div class="svc-tags"><span class="svc-tag">Revisão de artigos</span><span class="svc-tag">Parecer técnico</span></div>
+      </div>
+    </div>
+    <div class="carousel-dots" id="svc-dots" role="tablist" aria-label="Serviços">
+      <button class="dot active" role="tab" aria-selected="true" aria-label="Serviço 1"></button>
+      <button class="dot" role="tab" aria-selected="false" aria-label="Serviço 2"></button>
+      <button class="dot" role="tab" aria-selected="false" aria-label="Serviço 3"></button>
+      <button class="dot" role="tab" aria-selected="false" aria-label="Serviço 4"></button>
+      <button class="dot" role="tab" aria-selected="false" aria-label="Serviço 5"></button>
+      <button class="dot" role="tab" aria-selected="false" aria-label="Serviço 6"></button>
+      <button class="dot" role="tab" aria-selected="false" aria-label="Serviço 7"></button>
+      <button class="dot" role="tab" aria-selected="false" aria-label="Serviço 8"></button>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- PARA QUEM -->
+<section id="publico" class="carousel-section">
+<div class="container">
+  <div class="sec-label">Para quem</div>
+  <h2 class="sec-h2">Quem já avançou com a SOMAS</h2>
+  <p class="sec-desc">Atendemos quem faz pesquisa em saúde com seriedade e precisa de apoio qualificado nos métodos — independentemente da área ou da etapa do estudo.</p>
+  <div class="carousel-wrap">
+    <div class="multi-track" id="pub-track" role="list">
+      <div class="pub-card step-card" role="listitem">
+        <div class="pub-icon">🎓</div>
+        <div class="pub-title">Mestrandos e doutorandos</div>
+        <div class="pub-desc">Do projeto à defesa, com apoio metodológico e analítico em cada etapa, para chegar à banca com segurança e consistência científica.</div>
+      </div>
+      <div class="pub-card step-card" role="listitem">
+        <div class="pub-icon">🔭</div>
+        <div class="pub-title">Pesquisadores e docentes</div>
+        <div class="pub-desc">Análises complexas, revisões de evidências e suporte metodológico para publicar com qualidade e dentro dos prazos editoriais.</div>
+      </div>
+      <div class="pub-card step-card" role="listitem">
+        <div class="pub-icon">🏥</div>
+        <div class="pub-title">Serviços e secretarias de saúde</div>
+        <div class="pub-desc">Estudos epidemiológicos e análise de indicadores para gestores que necessitam de evidências científicas para planejar e fundamentar decisões.</div>
+      </div>
+      <div class="pub-card step-card" role="listitem">
+        <div class="pub-icon">🏛️</div>
+        <div class="pub-title">Universidades e grupos de pesquisa</div>
+        <div class="pub-desc">Suporte técnico a programas de pós-graduação e grupos de pesquisa que buscam qualidade e regularidade na produção científica.</div>
+      </div>
+    </div>
+    <div class="carousel-dots" id="pub-dots" role="tablist" aria-label="Públicos atendidos">
+      <button class="dot active" role="tab" aria-selected="true" aria-label="Público 1"></button>
+      <button class="dot" role="tab" aria-selected="false" aria-label="Público 2"></button>
+      <button class="dot" role="tab" aria-selected="false" aria-label="Público 3"></button>
+      <button class="dot" role="tab" aria-selected="false" aria-label="Público 4"></button>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- DIFERENCIAIS -->
+<section id="diferenciais">
+<div class="container">
+  <div class="sec-label">Por que a SOMAS</div>
+  <h2 class="sec-h2">O que nos diferencia</h2>
+  <div class="dif-grid">
+    <div class="dif-item">
+      <div class="dif-num" aria-hidden="true">01</div>
+      <div class="dif-title">Produção científica ativa</div>
+      <div class="dif-desc">Publicações regulares em periódicos indexados. Conhecemos o processo de revisão por pares e sabemos o que os avaliadores exigem.</div>
+    </div>
+    <div class="dif-item">
+      <div class="dif-num" aria-hidden="true">02</div>
+      <div class="dif-title">Interpretação, não apenas resultados</div>
+      <div class="dif-desc">Qualquer ferramenta estatística gera tabelas. Nossa entrega é a compreensão do que os dados revelam e como isso sustenta a argumentação científica.</div>
+    </div>
+    <div class="dif-item">
+      <div class="dif-num" aria-hidden="true">03</div>
+      <div class="dif-title">Experiência consolidada em pesquisa em saúde</div>
+      <div class="dif-desc">Mais de uma década aplicando epidemiologia, bioestatística e análise de dados em estudos das mais diversas áreas da saúde.</div>
+    </div>
+    <div class="dif-item">
+      <div class="dif-num" aria-hidden="true">04</div>
+      <div class="dif-title">Autoria preservada e ética garantida</div>
+      <div class="dif-desc">Trabalhamos com transparência e formalização contratual. Cada decisão analítica é documentada para que você defenda seu trabalho com convicção.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- PORTFÓLIO -->
+<section class="sec-port" id="portfolio">
+<div class="container">
+  <span class="sec-label">Projetos entregues</span>
+  <h2 class="sec-h2">Do dado à conclusão — exemplos reais de entregas</h2>
+  <p class="sec-desc">Pequena amostra de projetos conduzidos em contextos reais de pesquisa acadêmica e institucional, apresentados de forma anonimizada para preservar a confidencialidade dos envolvidos.</p>
+  <div class="port-grid">
+
+    <!-- 1: Meta-análise -->
+    <div class="port-card">
+      <div class="port-body">
+      <div class="port-badge">
+        <span class="port-tag">Meta-análise · PRISMA</span>
+        <span class="port-tag port-tag-area">Síntese de evidências</span>
+      </div>
+      <div class="port-title">Incidência de eventos adversos pós-vacinação — revisão sistemática com síntese quantitativa</div>
+      <div class="port-desc">Síntese de 160 estudos observacionais com quatro métricas operacionais de incidência. Análises de subgrupo por ciclo de vida, tecnologia vacinal, número de doses e delineamento de estudo.</div>
+      <div class="port-meta">Dados secundários · Revisão sistemática · Artigo científico</div>
+    </div>
+  </div>
+
+    <!-- 2: Clusters espaciais / vigilância -->
+    <div class="port-card">
+      <div class="port-body">
+      <div class="port-badge">
+        <span class="port-tag">LISA · Gi* · Cluster</span>
+        <span class="port-tag port-tag-area">Vigilância epidemiológica</span>
+      </div>
+      <div class="port-title">Distribuição espacial e detecção de clusters de eventos adversos pós-vacinação em território estadual</div>
+      <div class="port-desc">Mais de 23 mil notificações em centenas de municípios. Autocorrelação espacial global e local (LISA), estatística Getis-Ord Gi* e escore sintético de risco espacial composto.</div>
+      <div class="port-meta">Dados secundários · Estudo ecológico · Artigo científico</div>
+    </div>
+  </div>
+
+    <!-- 3: Análise espacial + temporal + textual -->
+    <div class="port-card">
+      <div class="port-body">
+      <div class="port-badge">
+        <span class="port-tag">Espacial · Temporal · Textual</span>
+        <span class="port-tag port-tag-area">Urgência e emergência</span>
+      </div>
+      <div class="port-title">Epidemiologia dos atendimentos em saúde mental por serviço de urgência — análise multidimensional</div>
+      <div class="port-desc">Mais de 36 mil atendimentos em dezenas de municípios ao longo de 10 anos. Análise espacial, série temporal e mineração de texto com bigramas e redes de coocorrência lexical por faixa etária.</div>
+      <div class="port-meta">Dados secundários · Estudo ecológico · Dissertação de mestrado</div>
+    </div>
+  </div>
+
+    <!-- 4: Série histórica / dados secundários -->
+    <div class="port-card">
+      <div class="port-body">
+      <div class="port-badge">
+        <span class="port-tag">Série histórica · DATASUS</span>
+        <span class="port-tag port-tag-area">Saúde da mulher</span>
+      </div>
+      <div class="port-title">Perfil de exames citopatológicos cervicais — série histórica de 11 anos com dados nacionais</div>
+      <div class="port-desc">Mais de 31 mil exames extraídos e processados de sistema nacional. Cálculo de índice de positividade, razão ASC/SIL e perfil de resultados alterados por faixa etária ao longo de uma década.</div>
+      <div class="port-meta">Dados secundários · Estudo ecológico · Dissertação de mestrado</div>
+    </div>
+  </div>
+
+    <!-- 5: Multicêntrico internacional / multi-desfecho -->
+    <div class="port-card">
+      <div class="port-body">
+      <div class="port-badge">
+        <span class="port-tag">GEE · Multi-desfecho</span>
+        <span class="port-tag port-tag-area">Saúde do idoso</span>
+      </div>
+      <div class="port-title">Autocuidado e qualidade de vida em idosos — estudo multicêntrico internacional</div>
+      <div class="port-desc">Mais de 400 participantes de três municípios em dois países. Avaliação conjunta de autocuidado e qualidade de vida com abordagem multivariada multi-desfecho.</div>
+      <div class="port-meta">Dados primários · Estudo transversal · Artigo científico</div>
+    </div>
+  </div>
+
+    <!-- 6: Medidas repetidas / saúde mental -->
+    <div class="port-card">
+      <div class="port-body">
+      <div class="port-badge">
+        <span class="port-tag">GEE · Gamma</span>
+        <span class="port-tag port-tag-area">Saúde mental</span>
+      </div>
+      <div class="port-title">Intervenção de bem-estar em universitários — trajetória longitudinal do sofrimento psicológico</div>
+      <div class="port-desc">Estudo quase-experimental com seis momentos de avaliação e três grupos de exposição. Modelagem de depressão, ansiedade e estresse com GEE e distribuição Gamma.</div>
+      <div class="port-meta">Delineamento longitudinal · Dados primários · Tese de doutorado</div>
+    </div>
+  </div>
+
+    <!-- 7: Psicometria / educação em saúde -->
+    <div class="port-card">
+      <div class="port-body">
+      <div class="port-badge">
+        <span class="port-tag">Psicometria · GEE</span>
+        <span class="port-tag port-tag-area">Educação em saúde</span>
+      </div>
+      <div class="port-title">Prontidão para aprendizagem interprofissional — análise psicométrica e comparação pré–pós intervenção</div>
+      <div class="port-desc">Estudantes de seis cursos da área da saúde. Análise de confiabilidade (α e Ω), classificação por zonas normativas, comparações pareadas e modelo GEE ajustado por variáveis sociodemográficas e acadêmicas.</div>
+      <div class="port-meta">Dados primários · Estudo quase-experimental · Artigo científico</div>
+    </div>
+  </div>
+
+    <!-- 8: Psicometria / saúde infantil -->
+    <div class="port-card">
+      <div class="port-body">
+      <div class="port-badge">
+        <span class="port-tag">Psicometria · Prevalência</span>
+        <span class="port-tag port-tag-area">Saúde infantil</span>
+      </div>
+      <div class="port-title">Sintomas de ansiedade em crianças em situação de vulnerabilidade social — análise psicométrica</div>
+      <div class="port-desc">Crianças de 7 a 9 anos. Análise psicométrica de escala específica de ansiedade, classificação normativa, estimativa de prevalência e associação com variáveis sociodemográficas.</div>
+      <div class="port-meta">Dados primários · Estudo transversal · Projeto de pesquisa</div>
+    </div>
+  </div>
+
+    <!-- 9: Estudo metodológico / construção de instrumento -->
+    <div class="port-card">
+      <div class="port-body">
+      <div class="port-badge">
+        <span class="port-tag">CVC · RVC · IVC · Delphi</span>
+        <span class="port-tag port-tag-area">Estudo metodológico</span>
+      </div>
+      <div class="port-title">Construção e validação de instrumento de avaliação motora em escolares — três rodadas Delphi</div>
+      <div class="port-desc">Instrumento original com 12 habilidades avaliado por painel de 36 especialistas em três rodadas. Análise quantitativa de CVC, RVC e IVC com avaliações qualitativas integradas. Produto final com evidências robustas de validade de conteúdo.</div>
+      <div class="port-meta">Pesquisa de campo metodológica · Tese de doutorado</div>
+    </div>
+  </div>
+
+    <!-- 10: Protocolo assistencial / validação -->
+    <div class="port-card">
+      <div class="port-body">
+      <div class="port-badge">
+        <span class="port-tag">Validação · Protocolo</span>
+        <span class="port-tag port-tag-area">Saúde mental · Cirurgia</span>
+      </div>
+      <div class="port-title">Construção e validação de protocolo assistencial de enfermagem para saúde mental no perioperatório</div>
+      <div class="port-desc">Protocolo desenvolvido para o cuidado em saúde mental de pacientes no período perioperatório de cirurgia de grande porte. Processo de validação com especialistas e evidências de adequação técnico-científica.</div>
+      <div class="port-meta">Pesquisa metodológica · Tese de doutorado</div>
+    </div>
+  </div>
+
+    <!-- 11: Pipeline automatizado -->
+    <div class="port-card">
+      <div class="port-body">
+      <div class="port-badge">
+        <span class="port-tag">Pipeline automatizado · R</span>
+        <span class="port-tag port-tag-area">Saúde do trabalhador</span>
+      </div>
+      <div class="port-title">Qualidade de vida no trabalho e satisfação profissional — pipeline analítico automatizado para tese</div>
+      <div class="port-desc">Relatório reprodutível com 22 checagens de qualidade de dados, análise de pressupostos, 10 escores pareados e sensibilidade paramétrica/não paramétrica. Pipeline documentado e reutilizável em R.</div>
+      <div class="port-meta">Dados primários · Longitudinal · Tese de doutorado</div>
+    </div>
+  </div>
+
+    <!-- 12: Teleconsultoria / fomento -->
+    <div class="port-card">
+      <div class="port-body">
+      <div class="port-badge">
+        <span class="port-tag">Pipeline automatizado · Regressão logística</span>
+        <span class="port-tag port-tag-area">Saúde bucal</span>
+      </div>
+      <div class="port-title">Diagnóstico remoto de lesões orais por imagem — relatório técnico-científico de projeto financiado</div>
+      <div class="port-desc">Relatório demonstrativo da camada de publicação científica de projeto aprovado em chamada pública de fomento à pesquisa. Pipeline automatizado com tabela descritiva, regressão logística, figuras e referências formatadas.</div>
+      <div class="port-meta">Dados primários · Estudo transversal · Relatório de fomento</div>
+    </div>
+  </div>
+
+  </div>
+</div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+<div class="container">
+  <div class="sec-label">Perguntas frequentes</div>
+  <h2 class="sec-h2">O que nossos clientes costumam perguntar</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+        A coleta de dados ainda não foi iniciada. É possível solicitar apoio agora?
+        <span class="faq-icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq-a">Sim, e essa é a etapa mais estratégica para buscar apoio. Intervir antes da coleta permite estruturar o delineamento com precisão, selecionar variáveis com critério e dimensionar a amostra de forma adequada. Problemas metodológicos criados antes da coleta raramente admitem correção posterior sem comprometer a validade do estudo.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+        Os dados já foram coletados, mas não sei quais análises realizar.
+        <span class="faq-icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq-a">Essa é a situação mais frequente entre nossos clientes. A partir dos seus objetivos e das características da base de dados, elaboramos um plano analítico fundamentado, executamos as análises e entregamos um relatório técnico completo, pronto para orientar a escrita dos resultados.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+        Como funciona a questão da autoria? A SOMAS será creditada no artigo?
+        <span class="faq-icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq-a">Depende do escopo acordado. Para análises técnicas pontuais, o reconhecimento habitual é nos agradecimentos. Quando a participação abrange delineamento e interpretação de forma mais ampla, a autoria pode ser discutida, sempre com base nas diretrizes do ICMJE. Tudo é formalizado em contrato antes do início do serviço.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+        Minha base de dados contém informações sigilosas. Como é tratada a confidencialidade?
+        <span class="faq-icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq-a">Com rigor contratual e em conformidade com a LGPD. Antes de qualquer início, formalizamos escopo, prazos e responsabilidades, incluindo cláusulas de confidencialidade. Os dados recebidos são utilizados exclusivamente para os fins contratados e não são compartilhados com terceiros em nenhuma hipótese.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+        Em quanto tempo recebo o orçamento após o envio do formulário?
+        <span class="faq-icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq-a">Em até 48 horas úteis. O envio da base de dados junto ao formulário agiliza significativamente o processo e permite uma proposta mais precisa e detalhada.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+        Qual é o valor dos serviços? Existe um preço mínimo?
+        <span class="faq-icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq-a">Os valores variam conforme o escopo, a complexidade e o prazo de cada demanda. Não há preço fixo tabelado — cada proposta é elaborada individualmente após análise da sua necessidade. Não existe valor mínimo: atendemos desde consultorias pontuais até projetos de maior complexidade. O orçamento é sempre enviado antes de qualquer início, sem compromisso.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+        A SOMAS atende pesquisadores de outras áreas além de enfermagem e epidemiologia?
+        <span class="faq-icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq-a">Sim. Nossa formação em epidemiologia, saúde coletiva e bioestatística nos habilita a atender pesquisas em medicina, farmácia, nutrição, fisioterapia, odontologia, psicologia da saúde e áreas afins. O critério fundamental é que a pesquisa envolva dados ou métodos científicos em saúde.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+<div class="container">
+  <div class="contato-cta">
+    <h2>Pronto para avançar na sua pesquisa?</h2>
+    <p>Descreva seu estudo e o que precisa resolver. Analisamos sua demanda e retornamos em até 48 horas com uma proposta adequada à sua necessidade.</p>
+    <div class="contato-btns">
+      <button class="btn btn-branco" onclick="abrirModal('orcamento')">Solicitar orçamento de análise</button>
+      <button class="btn btn-branco-ghost" onclick="abrirModal('consultoria')">Agendar consultoria em métodos</button>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>SOMAS · MN²</strong></p>
+  <p>MN2 Ciência e Dados Ltda. · Alfenas, MG</p>
+  <div class="footer-btns">
+    <a class="footer-btn footer-btn-email" href="https://mail.google.com/mail/?view=cm&to=somas.mn2@gmail.com" target="_blank" rel="noopener" aria-label="Enviar e-mail">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      Fale conosco
+    </a>
+    <a class="footer-btn footer-btn-wpp" href="https://wa.me/5535991632720" target="_blank" rel="noopener" aria-label="WhatsApp">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.524 5.847L.057 23.868a.5.5 0 0 0 .611.611l6.084-1.462A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.006-1.373l-.36-.214-3.713.893.909-3.624-.235-.372A9.818 9.818 0 1 1 12 21.818z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+</footer>
+
+<!-- MODAL ORÇAMENTO -->
+<div class="modal-overlay" id="modal-orcamento" role="dialog" aria-modal="true" aria-labelledby="titulo-orc">
+  <div class="modal">
+    <button class="modal-close" onclick="fecharModal('orcamento')" aria-label="Fechar">✕</button>
+    <h3 id="titulo-orc">Solicitar orçamento para análise de dados</h3>
+    <p class="modal-sub">Preencha o formulário para receber uma proposta sem compromisso. O planejamento das análises e o orçamento são elaborados por e-mail após a avaliação da sua demanda.<br><br>
+    <strong>Importante:</strong> o processo é consideravelmente mais ágil quando é possível visualizar a base de dados. Todas as informações recebidas são tratadas com sigilo e formalidade contratual.</p>
+    <div id="form-orc">
+      <div class="form-group">
+        <label for="orc-nome">Nome completo *</label>
+        <input id="orc-nome" type="text" placeholder="Seu nome completo">
+      </div>
+      <div class="form-group">
+        <label for="orc-email">E-mail para contato *</label>
+        <input id="orc-email" type="email" placeholder="Informe o e-mail que você monitora com regularidade">
+        <div class="form-note">Retornaremos exclusivamente por e-mail com a proposta personalizada.</div>
+      </div>
+      <div class="form-group">
+        <label for="orc-nivel">Nível e área da pesquisa *</label>
+        <select id="orc-nivel">
+          <option value="">Selecione...</option>
+          <option>Dissertação de mestrado</option>
+          <option>Tese de doutorado</option>
+          <option>Pesquisa de docente ou pesquisador</option>
+          <option>Projeto institucional</option>
+          <option>Outro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="orc-demanda">Objetivo do estudo e o que precisa ser analisado *</label>
+        <textarea id="orc-demanda" placeholder="Descreva o objetivo do estudo, as perguntas de pesquisa, as variáveis envolvidas e o software que utiliza ou pretende utilizar. Quanto mais contexto, mais precisa será a proposta."></textarea>
+        <div class="form-note">Se os objetivos ou variáveis ainda não estão definidos, recomendamos iniciar por uma sessão de consultoria metodológica.</div>
+      </div>
+      <div class="form-group">
+        <label for="orc-arquivo">Base de dados ou arquivos de referência</label>
+        <div class="form-note">Inclua o que estiver disponível: banco de dados, roteiro de coleta, script de análise ou artigo com delineamento semelhante. Limite de 10 MB por arquivo.</div>
+        <input id="orc-arquivo" type="file" multiple accept=".csv,.xlsx,.sav,.dta,.R,.pdf,.docx" style="margin-top:.5rem">
+      </div>
+      <button class="btn btn-teal form-submit" onclick="enviarForm('orc')">Enviar solicitação de orçamento</button>
+    </div>
+    <div class="form-success" id="success-orc" role="alert">
+      <div class="check">✅</div>
+      <h4>Solicitação recebida com sucesso.</h4>
+      <p>Analisaremos sua demanda e retornaremos em até 48 horas úteis com uma proposta personalizada.</p>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONSULTORIA -->
+<div class="modal-overlay" id="modal-consultoria" role="dialog" aria-modal="true" aria-labelledby="titulo-cons">
+  <div class="modal">
+    <button class="modal-close" onclick="fecharModal('consultoria')" aria-label="Fechar">✕</button>
+    <h3 id="titulo-cons">Solicitar sessão de consultoria metodológica</h3>
+    <p class="modal-sub">A consultoria metodológica é uma sessão individual voltada às especificidades do seu estudo. Indicada para quem está estruturando o projeto, precisa definir variáveis e hipóteses, ou se deparou com um impasse analítico ao longo da pesquisa.<br><br>
+    Informe seu e-mail. Entraremos em contato para definir data, horário e formato da sessão.</p>
+    <div id="form-cons">
+      <div class="form-group">
+        <label for="cons-nome">Nome completo *</label>
+        <input id="cons-nome" type="text" placeholder="Seu nome completo">
+      </div>
+      <div class="form-group">
+        <label for="cons-email">E-mail para contato *</label>
+        <input id="cons-email" type="email" placeholder="Informe o e-mail que você monitora com regularidade">
+      </div>
+      <div class="form-group">
+        <label for="cons-nivel">Nível e área da pesquisa *</label>
+        <select id="cons-nivel">
+          <option value="">Selecione...</option>
+          <option>Dissertação de mestrado</option>
+          <option>Tese de doutorado</option>
+          <option>Pesquisa de docente ou pesquisador</option>
+          <option>Projeto institucional</option>
+          <option>Outro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="cons-demanda">Etapa do estudo e o que precisa resolver *</label>
+        <textarea id="cons-demanda" placeholder="Em que fase está a pesquisa? Qual é a dificuldade metodológica? Quanto mais você detalhar, mais produtiva será a sessão."></textarea>
+      </div>
+      <div class="form-group">
+        <label for="cons-arquivo">Materiais que contextualizem o estudo</label>
+        <div class="form-note">Projeto de pesquisa, instrumento de coleta, base de dados, artigos de referência ou script em uso. Qualquer material que auxilie na compreensão do contexto da pesquisa é bem-vindo.</div>
+        <input id="cons-arquivo" type="file" multiple accept=".csv,.xlsx,.sav,.dta,.R,.pdf,.docx" style="margin-top:.5rem">
+      </div>
+      <button class="btn btn-teal form-submit" onclick="enviarForm('cons')">Enviar solicitação de consultoria</button>
+    </div>
+    <div class="form-success" id="success-cons" role="alert">
+      <div class="check">✅</div>
+      <h4>Solicitação recebida com sucesso.</h4>
+      <p>Entraremos em contato em até 48 horas úteis para definir data, horário e os detalhes da sessão.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* MODAL */
+function abrirModal(t){
+  var o=document.getElementById('modal-'+t);
+  o.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function fecharModal(t){
+  document.getElementById('modal-'+t).classList.remove('open');
+  document.body.style.overflow='';
+}
+document.querySelectorAll('.modal-overlay').forEach(function(el){
+  el.addEventListener('click',function(e){
+    if(e.target===this){this.classList.remove('open');document.body.style.overflow='';}
+  });
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    document.querySelectorAll('.modal-overlay.open').forEach(function(el){
+      el.classList.remove('open');document.body.style.overflow='';
+    });
+  }
+});
+function enviarForm(t){
+  document.getElementById('form-'+t).style.display='none';
+  document.getElementById('success-'+t).style.display='block';
+}
+
+/* FAQ */
+function toggleFaq(btn){
+  var item=btn.closest('.faq-item');
+  var isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(i){i.classList.remove('open');});
+  document.querySelectorAll('.faq-q').forEach(function(b){b.setAttribute('aria-expanded','false');});
+  if(!isOpen){item.classList.add('open');btn.setAttribute('aria-expanded','true');}
+}
+
+/* CARROSSÉIS */
+function initCarousel(trackId, dotsId, clickFn) {
+  var track = document.getElementById(trackId);
+  var dotsWrap = document.getElementById(dotsId);
+  if (!track) return;
+  var cards = track.querySelectorAll('.step-card, .svc-card, .pub-card');
+  var dots = dotsWrap ? dotsWrap.querySelectorAll('.dot') : [];
+  var current = 0;
+  var isDragging = false, startX = 0, scrollStart = 0;
+
+  function goTo(i) {
+    current = i;
+    track.scrollTo({ left: cards[i].offsetLeft, behavior: 'smooth' });
+    dots.forEach(function(d, idx) {
+      d.classList.toggle('active', idx === i);
+      d.setAttribute('aria-selected', idx === i ? 'true' : 'false');
+    });
+  }
+
+  dots.forEach(function(d, i) { d.addEventListener('click', function() { goTo(i); }); });
+
+  track.addEventListener('scroll', function() {
+    var center = track.scrollLeft + track.clientWidth / 2;
+    var closest = 0, minDist = Infinity;
+    cards.forEach(function(c, i) {
+      var dist = Math.abs(c.offsetLeft + c.offsetWidth / 2 - center);
+      if (dist < minDist) { minDist = dist; closest = i; }
+    });
+    if (closest !== current) {
+      current = closest;
+      dots.forEach(function(d, i) {
+        d.classList.toggle('active', i === closest);
+        d.setAttribute('aria-selected', i === closest ? 'true' : 'false');
+      });
+    }
+  });
+
+  track.addEventListener('mousedown', function(e) { isDragging = true; startX = e.pageX; scrollStart = track.scrollLeft; track.classList.add('grabbing'); });
+  document.addEventListener('mousemove', function(e) { if (!isDragging) return; track.scrollLeft = scrollStart - (e.pageX - startX); });
+  document.addEventListener('mouseup', function() { isDragging = false; track.classList.remove('grabbing'); });
+
+  if (clickFn) window[clickFn] = goTo;
+}
+
+initCarousel('carousel', null, null);
+// pontinhos do carrossel de etapas já usam irPara() — remapeamos
+(function(){
+  var track=document.getElementById('carousel');
+  var dotsEl=track&&track.closest('.carousel-wrap')&&track.closest('.carousel-wrap').querySelector('.carousel-dots');
+  var cards=track?track.querySelectorAll('.step-card'):[];
+  var dots=dotsEl?dotsEl.querySelectorAll('.dot'):[];
+  var cur=0;
+  function goTo(i){cur=i;cards[i]&&track.scrollTo({left:cards[i].offsetLeft,behavior:'smooth'});dots.forEach(function(d,idx){d.classList.toggle('active',idx===i);d.setAttribute('aria-selected',idx===i?'true':'false');});}
+  dots.forEach(function(d,i){d.addEventListener('click',function(){goTo(i);});});
+  window.irPara=goTo;
+  track&&track.addEventListener('scroll',function(){var c=track.scrollLeft+track.clientWidth/2;var cl=0,mn=Infinity;cards.forEach(function(card,i){var d=Math.abs(card.offsetLeft+card.offsetWidth/2-c);if(d<mn){mn=d;cl=i;}});if(cl!==cur){cur=cl;dots.forEach(function(d,i){d.classList.toggle('active',i===cl);d.setAttribute('aria-selected',i===cl?'true':'false');});}});
+  var drag=false,sx=0,ss=0;
+  track&&track.addEventListener('mousedown',function(e){drag=true;sx=e.pageX;ss=track.scrollLeft;track.classList.add('grabbing');});
+  document.addEventListener('mousemove',function(e){if(!drag)return;track.scrollLeft=ss-(e.pageX-sx);});
+  document.addEventListener('mouseup',function(){drag=false;track&&track.classList.remove('grabbing');});
+})();
+
+initCarousel('svc-track', 'svc-dots');
+initCarousel('pub-track', 'pub-dots');
+</script>
+</body>
+</html>
