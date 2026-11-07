@@ -791,16 +791,16 @@ footer strong{color:rgba(255,255,255,.82);font-weight:500}
     <div id="form-orc">
       <div class="form-group">
         <label for="orc-nome">Nome completo *</label>
-        <input id="orc-nome" type="text" placeholder="Seu nome completo">
+        <input id="orc-nome" name="nome" type="text" placeholder="Seu nome completo">
       </div>
       <div class="form-group">
         <label for="orc-email">E-mail para contato *</label>
-        <input id="orc-email" type="email" placeholder="Informe o e-mail que você monitora com regularidade">
+        <input id="orc-email" name="email" type="email" placeholder="Informe o e-mail que você monitora com regularidade">
         <div class="form-note">Retornaremos exclusivamente por e-mail com a proposta personalizada.</div>
       </div>
       <div class="form-group">
         <label for="orc-nivel">Nível e área da pesquisa *</label>
-        <select id="orc-nivel">
+        <select id="orc-nivel" name="nivel">
           <option value="">Selecione...</option>
           <option>Dissertação de mestrado</option>
           <option>Tese de doutorado</option>
@@ -811,7 +811,7 @@ footer strong{color:rgba(255,255,255,.82);font-weight:500}
       </div>
       <div class="form-group">
         <label for="orc-demanda">Objetivo do estudo e o que precisa ser analisado *</label>
-        <textarea id="orc-demanda" placeholder="Descreva o objetivo do estudo, as perguntas de pesquisa, as variáveis envolvidas e o software que utiliza ou pretende utilizar. Quanto mais contexto, mais precisa será a proposta."></textarea>
+        <textarea id="orc-demanda" name="mensagem" placeholder="Descreva o objetivo do estudo, as perguntas de pesquisa, as variáveis envolvidas e o software que utiliza ou pretende utilizar. Quanto mais contexto, mais precisa será a proposta."></textarea>
         <div class="form-note">Se os objetivos ou variáveis ainda não estão definidos, recomendamos iniciar por uma sessão de consultoria metodológica.</div>
       </div>
       <div class="form-group">
@@ -839,15 +839,15 @@ footer strong{color:rgba(255,255,255,.82);font-weight:500}
     <div id="form-cons">
       <div class="form-group">
         <label for="cons-nome">Nome completo *</label>
-        <input id="cons-nome" type="text" placeholder="Seu nome completo">
+        <input id="cons-nome" name="nome" type="text" placeholder="Seu nome completo">
       </div>
       <div class="form-group">
         <label for="cons-email">E-mail para contato *</label>
-        <input id="cons-email" type="email" placeholder="Informe o e-mail que você monitora com regularidade">
+        <input id="cons-email" name="email" type="email" placeholder="Informe o e-mail que você monitora com regularidade">
       </div>
       <div class="form-group">
         <label for="cons-nivel">Nível e área da pesquisa *</label>
-        <select id="cons-nivel">
+        <select id="cons-nivel" name="nivel">
           <option value="">Selecione...</option>
           <option>Dissertação de mestrado</option>
           <option>Tese de doutorado</option>
@@ -858,7 +858,7 @@ footer strong{color:rgba(255,255,255,.82);font-weight:500}
       </div>
       <div class="form-group">
         <label for="cons-demanda">Etapa do estudo e o que precisa resolver *</label>
-        <textarea id="cons-demanda" placeholder="Em que fase está a pesquisa? Qual é a dificuldade metodológica? Quanto mais você detalhar, mais produtiva será a sessão."></textarea>
+        <textarea id="cons-demanda" name="mensagem" placeholder="Em que fase está a pesquisa? Qual é a dificuldade metodológica? Quanto mais você detalhar, mais produtiva será a sessão."></textarea>
       </div>
       <div class="form-group">
         <label for="cons-arquivo">Materiais que contextualizem o estudo</label>
@@ -898,9 +898,57 @@ document.addEventListener('keydown',function(e){
     });
   }
 });
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzdTHM4f15THW8nH-_3PHYroDM-SKECEOYC7AJrPWsdZ1wOKZtDhwru11spJqX4DsEv/exec';
+
 function enviarForm(t){
-  document.getElementById('form-'+t).style.display='none';
-  document.getElementById('success-'+t).style.display='block';
+  var form = document.getElementById('form-'+t);
+  var btn  = form.querySelector('.form-submit');
+
+  // Coleta campos
+  var nome     = (form.querySelector('[name=nome]')     || {value:''}).value.trim();
+  var email    = (form.querySelector('[name=email]')    || {value:''}).value.trim();
+  var nivel    = (form.querySelector('[name=nivel]')    || {value:''}).value.trim();
+  var mensagem = (form.querySelector('[name=mensagem]') || {value:''}).value.trim();
+
+  // Validação básica
+  if (!nome || !email || !nivel || !mensagem) {
+    alert('Por favor, preencha todos os campos obrigatórios (*).');
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    alert('Informe um e-mail válido.');
+    return;
+  }
+
+  // Feedback de envio
+  btn.textContent = 'Enviando…';
+  btn.disabled = true;
+
+  var payload = {
+    tipo:     t === 'orc' ? 'Solicitação de orçamento' : 'Solicitação de consultoria',
+    nome:     nome,
+    email:    email,
+    nivel:    nivel,
+    mensagem: mensagem
+  };
+
+  fetch(APPS_SCRIPT_URL, {
+    method:  'POST',
+    headers: {'Content-Type': 'application/json'},
+    body:    JSON.stringify(payload),
+    mode:    'no-cors'   // Apps Script não envia CORS header — usamos no-cors
+  })
+  .then(function(){
+    // no-cors não retorna corpo — assumimos sucesso se não deu erro de rede
+    form.style.display = 'none';
+    document.getElementById('success-'+t).style.display = 'block';
+  })
+  .catch(function(err){
+    btn.textContent = 'Enviar';
+    btn.disabled = false;
+    alert('Erro ao enviar. Tente novamente ou escreva diretamente para somas.mn2@gmail.com');
+    console.error(err);
+  });
 }
 
 /* FAQ */
